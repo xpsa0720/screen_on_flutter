@@ -13,7 +13,7 @@ import io.flutter.Log
 class ScreenService : Service() {
 
     var receiver: ScreenReceiver? = null;
-    private val ANDROID_CHANNEL_ID = "familylovenotification"
+    private val ANDROID_CHANNEL_ID = "mindit_background"
     private val NOTIFICATION_ID = 9999
     fun LockScreen_registerReciver(name:String?){
         val filter = IntentFilter(Intent.ACTION_SCREEN_ON)
@@ -35,27 +35,24 @@ class ScreenService : Service() {
             }
         }
 
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(ANDROID_CHANNEL_ID, "LockScreen", NotificationManager.IMPORTANCE_HIGH)
-            val notificationManger = getSystemService(NotificationManager::class.java)
-            notificationManger.createNotificationChannel(channel)
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                ANDROID_CHANNEL_ID,
+                "Mindit",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
         }
 
-        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder(this, ANDROID_CHANNEL_ID).setContentTitle("넌 춘식이여")
-                .setContentText("알겠지?").setSmallIcon(android.R.drawable.ic_lock_idle_lock)
-        } else {
-            Notification.Builder(this)
-                .setContentTitle("알림 시작했어")
-                .setContentText("시발")
-                .setSmallIcon(android.R.drawable.ic_lock_idle_lock)
-        }
-        val notification = builder.build()
+        val notification = Notification.Builder(this, ANDROID_CHANNEL_ID)
+            .setContentTitle("Mindit")
+            .setContentText("Running in background")
 
-        startForeground(NOTIFICATION_ID, builder.build())
+            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .build()
 
+        startForeground(NOTIFICATION_ID, notification)
 
         return Service.START_REDELIVER_INTENT
     }
