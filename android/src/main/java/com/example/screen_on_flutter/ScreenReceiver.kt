@@ -33,12 +33,9 @@ class ScreenReceiver : BroadcastReceiver() {
     private fun ScreenOn(context: Context, name:String){
         try {
             val i = FlutterActivity.withCachedEngine("LockScreenEngine_id").build(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                .NewEngineIntentBuilder(LockScreenActivity::class.java).dartEntrypointArgs()
-
             context.startActivity(i)
         } catch (e: Exception) {
             Log.e("에러!!!!!!", e.toString())
-
         }
     }
 

@@ -6,13 +6,13 @@ import 'package:screen_on_flutter/screen_on_flutter.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final a = ScreenOnFlutter(entryPointName: "main3");
+  final a = ScreenOnFlutter(entryPointName: "main2");
   a.startService();
   runApp(MaterialApp(home: MyApp(a: a)));
 }
 
 @pragma('vm:entry-point')
-void main3() {
+void main2() {
   print("main2 실행");
   runApp(MaterialApp(home: MyApp2()));
 }
