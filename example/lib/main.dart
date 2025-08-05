@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:screen_on_flutter/screen_on_flutter.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final a = ScreenOnFlutter(entryPointName: "main2");
-  a.startService();
-  runApp(MaterialApp(home: MyApp(a: a)));
+  final service = ScreenOnFlutter(entryPointName: "main2");
+  service.startService();
+  runApp(MaterialApp(home: MyApp()));
 }
 
 @pragma('vm:entry-point')
@@ -46,27 +43,17 @@ class _MyApp2State extends State<MyApp2> with SingleTickerProviderStateMixin {
 }
 
 class MyApp extends StatefulWidget {
-  final ScreenOnFlutter a;
-  const MyApp({super.key, required this.a});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            widget.a.endService();
-          },
-          child: Text("끝"),
-        ),
-      ),
+      body: Center(child: ElevatedButton(onPressed: () {}, child: Text("끝"))),
     );
   }
 }
