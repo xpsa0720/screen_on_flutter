@@ -1,7 +1,5 @@
 package com.example.screen_on_flutter
-
 import android.content.Context
-import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache

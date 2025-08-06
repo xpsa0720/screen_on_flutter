@@ -5,10 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import com.example.screen_on_flutter.EventChannelHandler
-import io.flutter.Log
-import io.flutter.embedding.android.ExclusiveAppComponent
-import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -16,7 +12,6 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import kotlin.system.exitProcess
 
 /** ScreenOnFlutterPlugin */
 class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{

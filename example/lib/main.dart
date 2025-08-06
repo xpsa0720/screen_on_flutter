@@ -26,7 +26,6 @@ void main() async {
 
   await screenService.startService();
   await screenService.requestPermission();
-
   runApp(MyApp(service: screenService));
 }
 

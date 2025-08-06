@@ -1,11 +1,8 @@
 package com.example.screen_on_flutter
-
 import android.Manifest
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.example.screen_on_flutter.ScreenOnFlutterPlugin.EventChannelBridge
