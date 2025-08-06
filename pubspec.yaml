@@ -1,6 +1,6 @@
 name: screen_on_flutter
 description: "A Flutter plugin that lets you show any Flutter widget automatically whenever the device screen turns on, similar to a lockscreen-style popup or greeting."
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/xpsa0720/screen_on_flutter
 
 environment:
