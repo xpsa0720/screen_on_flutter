@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import 'class/status_class.dart';
 import 'screen_on_flutter_platform_interface.dart';
 
 class ChannelScreenOnFlutter extends ScreenOnFlutterPlatform {
@@ -11,6 +10,7 @@ class ChannelScreenOnFlutter extends ScreenOnFlutterPlatform {
   final methodChannel = const MethodChannel('screen_on_flutter_MethodChannel');
   final eventChannel = const EventChannel("screen_on_flutter_EventChannel");
   StreamSubscription? _streamSubscription;
+  @override
   Future<String?> getPlatformVersion() async {
     final version = await methodChannel.invokeMethod<String>(
       'getPlatformVersion',
@@ -47,7 +47,7 @@ class ChannelScreenOnFlutter extends ScreenOnFlutterPlatform {
   void startListenScreenOn({
     required void Function(dynamic) routeCallback,
     Function? onError,
-    void onDone()?,
+    void Function()? onDone,
     bool? cancelOnError,
   }) {
     _streamSubscription = eventChannel.receiveBroadcastStream().listen(

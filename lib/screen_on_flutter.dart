@@ -1,6 +1,4 @@
-import 'dart:ui';
 
-import 'package:flutter/services.dart';
 import 'package:screen_on_flutter/class/status_class.dart';
 
 import 'screen_on_flutter_platform_interface.dart';
