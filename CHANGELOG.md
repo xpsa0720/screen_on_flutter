@@ -1,2 +1,4 @@
-## 0.1.0
+## 0.1.3
 * Initial version
+
+- Removed unnecessary permissions.
