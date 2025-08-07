@@ -12,4 +12,3 @@ jobs:
       id-token: write
     with:
       environment: pub.dev
-      working-directory: packages/screen_on_flutter
