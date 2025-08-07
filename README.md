@@ -37,7 +37,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  screen_on_flutter: ^0.1.0
+  screen_on_flutter: {{version}}
 ```
 ### Usage
 
