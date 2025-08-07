@@ -7,7 +7,9 @@ on:
 
 jobs:
   publish:
-    environment: pub.dev
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    
+    with:
+      environment: pub.dev
