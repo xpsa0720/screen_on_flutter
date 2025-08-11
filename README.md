@@ -54,10 +54,10 @@ Update the `<application>` tag to use `MyApplication`:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-  <application
-      android:name=".MyApplication"
-      android:label="screen_on_flutter_example"
-      android:icon="@mipmap/ic_launcher">
+    <application
+        android:name=".MyApplication"
+        android:label="screen_on_flutter_example"
+        android:icon="@mipmap/ic_launcher">
 ```
 
 ---
@@ -67,6 +67,11 @@ Update the `<application>` tag to use `MyApplication`:
 Create a new file `MyApplication.kt` in the same folder as `MainActivity.kt`:
 
 ```kotlin
+import android.app.Application
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor.DartEntrypoint
+
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
@@ -88,6 +93,11 @@ class MyApplication : Application() {
 Update `MainActivity` to use the cached Flutter engine:
 
 ```kotlin
+import android.content.Context
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+
 class MainActivity : FlutterActivity() {
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
         return FlutterEngineCache.getInstance().get("screen_on_flutter")
@@ -103,19 +113,19 @@ class MainActivity : FlutterActivity() {
 
 ```dart
 screenService = ScreenOnFlutter(
-  routeCallback: (routeName) {
-    debugPrint('App launched from: $routeName');
+routeCallback: (routeName) {
+debugPrint('App launched from: $routeName');
 
-    if (routeName == "SCREEN_ON") {
-      Future.microtask(() {
-        navigatorKey.currentState?.pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => LockScreen(service: screenService),
-          ),
-        );
-      });
-    }
-  },
+if (routeName == "SCREEN_ON") {
+Future.microtask(() {
+navigatorKey.currentState?.pushReplacement(
+MaterialPageRoute(
+builder: (_) => LockScreen(service: screenService),
+),
+);
+});
+}
+},
 );
 ```
 
