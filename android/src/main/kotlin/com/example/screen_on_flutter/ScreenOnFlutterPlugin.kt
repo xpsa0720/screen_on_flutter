@@ -28,7 +28,7 @@ class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{
 
         fun mainActivityFinishAffinity(){
             val engine = FlutterEngineCache.getInstance().get("screen_on_flutter")
-            if(main_activity != null && engine != null && last_attach == "CustomFlutter") {
+            if(main_activity != null && engine != null && last_attach == "CustomFlutterActivity") {
                 main_activity!!.finishAndRemoveTask()
                 main_activity = null
             }
@@ -126,9 +126,9 @@ class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{
                 main_activity = activity
                 last_attach = "MainActivity"
             }
-            "CustomFlutter" -> {
+            "CustomFlutterActivity" -> {
                 flutter_activity = activity
-                last_attach = "CustomFlutter"
+                last_attach = "CustomFlutterActivity"
             }
         }
 
