@@ -1,3 +1,8 @@
+## 0.1.7
+* Edit ReadMe
+
+- Updated the documentation
+
 ## 0.1.6
 * Edit ReadMe
 
