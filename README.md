@@ -143,7 +143,12 @@ This is where you define how the screen should respond when activated by a syste
 
 ### ▶️ Start the service
 ```dart
-await screenService.startService();
+await screenService.startService(
+model: AlarmModel(
+content: "Start Service",
+title: "Screen_On_Flutter",
+),
+);
 ```
 
 ### ⏹ Stop the service
