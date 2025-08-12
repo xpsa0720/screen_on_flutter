@@ -1,5 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+import 'class/alarm_model.dart';
 import 'screen_on_flutter_method_channel.dart';
 
 abstract class ScreenOnFlutterPlatform extends PlatformInterface {
@@ -20,7 +21,9 @@ abstract class ScreenOnFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<void> startService() {
+  Future<void> startService({
+    required AlarmModel model,
+  }) {
     throw UnimplementedError('startService() has not been implemented.');
   }
 

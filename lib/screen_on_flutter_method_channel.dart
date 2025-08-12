@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'class/alarm_model.dart';
 import 'screen_on_flutter_platform_interface.dart';
 
 class ChannelScreenOnFlutter extends ScreenOnFlutterPlatform {
@@ -18,8 +19,11 @@ class ChannelScreenOnFlutter extends ScreenOnFlutterPlatform {
     return version;
   }
 
-  Future<String> startService_methodChannel() async {
-    final result = await methodChannel.invokeMethod<String>("startService");
+  Future<String> startService_methodChannel({
+    required AlarmModel model,
+  }) async {
+    final result = await methodChannel.invokeMethod<String>(
+        "startService", <String, dynamic>{"AlarmModel": model.toJson()});
     if (result == null) return "return null wrong!!";
     return result.toString();
   }
@@ -51,11 +55,11 @@ class ChannelScreenOnFlutter extends ScreenOnFlutterPlatform {
     bool? cancelOnError,
   }) {
     _streamSubscription = eventChannel.receiveBroadcastStream().listen(
-      routeCallback,
-      onError: onError,
-      onDone: onDone,
-      cancelOnError: cancelOnError,
-    );
+          routeCallback,
+          onError: onError,
+          onDone: onDone,
+          cancelOnError: cancelOnError,
+        );
   }
 
   void cancelListenScreenOn() {
