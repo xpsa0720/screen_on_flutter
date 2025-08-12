@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// The [AlarmModel] is used to display an alarm before the service starts.
 class AlarmModel {
   /// The [title] is the title of the alarm.
