@@ -22,7 +22,7 @@ class ScreenReceiver : BroadcastReceiver() {
             val i = CustomFlutterActivity.withCachedEngine("screen_on_flutter").build(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(i)
         } catch (e: Exception) {
-            Log.e("ScreenOn Error!!!!!!", e.toString())
+            Log.e("Screen_On_Flutter Error", e.toString())
         }
     }
 
