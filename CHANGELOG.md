@@ -1,3 +1,8 @@
+## 0.1.8
+* Fix the alarm bug
+
+- Modified it to send the alarm you want.
+
 ## 0.1.7
 * Edit ReadMe
 
