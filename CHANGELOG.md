@@ -1,4 +1,4 @@
-## 0.1.8
+## 1.1.8
 * Fix the alarm bug
 
 - Modified it to send the alarm you want.
