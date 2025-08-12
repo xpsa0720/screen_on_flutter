@@ -1,10 +1,15 @@
 package com.example.screen_on_flutter
+import android.Manifest
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -12,6 +17,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
+import kotlin.jvm.java
 
 /** ScreenOnFlutterPlugin */
 class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{
@@ -53,7 +59,7 @@ class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{
         when (call.method) {
             "getPlatformVersion" -> handleGetPlatformVersion(result)
             "requestPermission" -> getPermission(result)
-            "startService" -> startScreenService(result)
+            "startService" -> startScreenService(result,AlarmModel.fromMap(call.argument<Map<*,*>>("AlarmModel")))
             "moveToBack" -> moveToBack(result)
             "endService" -> endScreenService(result)
             else -> result.notImplemented()
@@ -80,9 +86,12 @@ class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{
 
     }
 
-    private fun startScreenService(result: MethodChannel.Result) {
+    private fun startScreenService(result: MethodChannel.Result,
+                                   alarmModel: AlarmModel) {
         try {
-            val service = Intent(context, ScreenService::class.java)
+            val service = Intent(context, ScreenService::class.java).apply{
+                putExtra("alarmModel", alarmModel)
+            }
             context.startService(service)
             result.success("success")
         } catch (e: Exception) {
@@ -93,15 +102,40 @@ class ScreenOnFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware{
 
     private fun getPermission(result: MethodChannel.Result) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!Settings.canDrawOverlays(context)) {
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + context.packageName)
-                    )
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val nm =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                val alreadyGranted =
+                    nm.areNotificationsEnabled() ||
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) == PackageManager.PERMISSION_GRANTED
+
+                if (!alreadyGranted) {
+                    main_activity?.let {
+                        ActivityCompat.requestPermissions(
+                            it,
+                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                            1001
+                        )
+                    } ?: run {
+                        val i = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        context.startActivity(i)
+                    }
                 }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:${context.packageName}")
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
             }
             result.success("success")
         } catch (e: Exception) {

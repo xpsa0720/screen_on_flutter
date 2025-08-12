@@ -1,13 +1,19 @@
 package com.example.screen_on_flutter
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.IBinder
+import androidx.core.app.NotificationCompat
+import androidx.core.graphics.drawable.IconCompat
+import io.flutter.FlutterInjector
+import io.flutter.Log
 
 class ScreenService : Service() {
     var receiver: ScreenReceiver? = null;
@@ -26,32 +32,41 @@ class ScreenService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        if (intent != null) {
+        try {
+            val alarmModel =intent?.getParcelableExtra<AlarmModel>("alarmModel")
+
             if (receiver == null) {
                 LockScreen_registerReciver()
             }
-        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                ANDROID_CHANNEL_ID,
-                "screen_on_flutter",
-                NotificationManager.IMPORTANCE_LOW
-            )
             val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    ANDROID_CHANNEL_ID,
+                    "screen_on_view",
+                    NotificationManager.IMPORTANCE_LOW
+                ).apply {
+                    setShowBadge(false)
+                }
+                channel.setShowBadge(false)
+                manager.createNotificationChannel(channel)
+            }
+
+            val notification = NotificationCompat.Builder(this, ANDROID_CHANNEL_ID)
+                .setContentTitle(alarmModel?.title?:"screen_on_view")
+                .setContentText(alarmModel?.content?:"background running")
+                .setOngoing(true)
+                .setNumber(0)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
+
+
+            startForeground(NOTIFICATION_ID, notification.build())
+            return START_REDELIVER_INTENT
+
+        }catch(e: Exception){
+            Log.e("Screen_on_flutter Error",e.toString())
+            return START_NOT_STICKY
         }
-
-        val notification = Notification.Builder(this, ANDROID_CHANNEL_ID)
-            .setContentTitle("Mindit")
-            .setContentText("Running in background")
-
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-            .build()
-
-        startForeground(NOTIFICATION_ID, notification)
-
-        return Service.START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
