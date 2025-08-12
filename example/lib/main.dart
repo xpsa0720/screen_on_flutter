@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:screen_on_flutter/class/alarm_model.dart';
 import 'package:screen_on_flutter/screen_on_flutter.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -11,7 +12,6 @@ void main() async {
   screenService = ScreenOnFlutter(
     routeCallback: (routeName) {
       debugPrint('App launched from: $routeName');
-
       if (routeName == "SCREEN_ON") {
         Future.microtask(() {
           navigatorKey.currentState?.pushReplacement(
@@ -24,7 +24,9 @@ void main() async {
     },
   );
 
-  await screenService.startService();
+  await screenService.startService(
+    model: AlarmModel(content: "Start Service", title: "Screen_On_Flutter"),
+  );
   await screenService.requestPermission();
   runApp(MyApp(service: screenService));
 }
